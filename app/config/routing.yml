@@ -1,3 +1,7 @@
+rcm_propuestas:
+    resource: "@RCMPropuestasBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

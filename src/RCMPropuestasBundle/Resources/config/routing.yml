@@ -1,0 +1,18 @@
+rcm_propuestas_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: RCMPropuestasBundle:Default:index }
+
+rcm_usuario_homepage:
+    path: /
+    defaults: { _controller: RCMPropuestasBundle:Usuario:home }
+
+rcm_usuario_login:
+    path: /login
+    defaults: { _controller: RCMPropuestasBundle:Security:login }
+
+rcm_usuario_login_check:
+    path: /login_check
+    defaults: { _controller: RCMPropuestasBundle:Security:loginCheck }
+
+rcm_usuario_logout:
+    path: /logout

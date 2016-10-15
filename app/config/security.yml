@@ -4,10 +4,26 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-            memory: ~
+        our_db_provider:
+          entity:
+            class: RCMPropuestasBundle:Usuario
+            property: email
 
     firewalls:
+        default:
+          anonymous: ~
+          http_basic: ~
+          form_login:
+            login_path: /login
+            check_path: /login_check
+            # field names for the email and the password fields
+            username_parameter: _email
+            password_parameter: _password
+            #defualt_taget_path: default_security_target
+            #always_use_default_target_path: true
+          logout:
+            path: /logout
+            target: /login
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -22,3 +38,11 @@ security:
 
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    encoders:
+        RCMPropuestasBundle\Entity\Usuario:
+          algorithm: bcrypt
+          cost: 12
+
+    access_control:
+      - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/$, roles: IS_AUTHENTICATED_FULLY }
