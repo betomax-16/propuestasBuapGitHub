@@ -16,3 +16,16 @@ rcm_usuario_login_check:
 
 rcm_usuario_logout:
     path: /logout
+
+rcm_visitante_info:
+    path: /info
+    defaults: { _controller: RCMPropuestasBundle:Visitante:info }
+
+rcm_visitante_contacto:
+    path: /contacto
+    defaults: { _controller: RCMPropuestasBundle:Visitante:contacto }
+
+rcm_visitante_email:
+    path: /email
+    defaults: { _controller: RCMPropuestasBundle:Visitante:enviarEmail }
+    methods: POST

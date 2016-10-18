@@ -1,22 +1,27 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('bundles/rcmpropuestas/css/login.css') }}" media="screen" title="no title">
+{% endblock %}
 {% block body %}
 {{ parent() }}
-<div class="container">
-  <form class="form-signin" action="{{ path('rcm_usuario_login_check') }}" method="post">
-    <h2 class="form-signin-heading">Inciar sesión</h2>
-    {% if error %}
-    <div class="text-danger">
-      <p>
-        <b>{{ error.messageKey }}</b>
-      </p>
-    </div>
-    {% endif %}
-    <label class="sr-only">Email:</label>
-    <input id="email" name="_email" value="{{ last_username }}" type="email" class="form-control" placeholder="Email..." required autofocus/>
-    <label class="sr-only">Contraseña:</label>
-    <input id="password" name="_password" type="password" class="form-control" placeholder="Contraseña..." required/>
+{% if error %}
+<div class="alert alert-info alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>{{ error.message }}</strong>
+</div>
+{% endif %}
+<div class="login">
+  <h1>Inciar sesión</h1>
+  <form action="{{ path('rcm_usuario_login_check') }}" method="post">
+    <input id="email" name="_email" value="{{ last_username }}" type="email" placeholder="Email..." required autofocus/>
+    <input id="password" name="_password" type="password" placeholder="Contraseña..." required/>
     <input type="hidden" name="_target_path" value="rcm_usuario_homepage"/>
-    <button type="submit" name="button" class="btn btn-primary btn-lg btn-block ">Ingreasar</button>
+    <button type="submit" name="button" class="btn btn-primary btn-large btn-block">Ingreasar</button>
   </form>
 </div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/rcmpropuestas/js/login.js') }}"></script>
 {% endblock %}

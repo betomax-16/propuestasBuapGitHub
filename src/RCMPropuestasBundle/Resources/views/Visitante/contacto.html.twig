@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('bundles/rcmpropuestas/css/footer.css') }}">
+{% endblock %}
+{% block body %}
+{{ parent() }}
+{% for label, flashes in app.session.flashbag.all %}
+    {% for flash in flashes %}
+        <div class="alert alert-{{ label }}">
+            {{ flash }}
+        </div>
+    {% endfor %}
+{% endfor %}
+<div id="conteiner" class="container">
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Contacto</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_label(form.nombre) }}
+    {{ form_widget(form.nombre, { 'attr' : { 'class' : 'form-control' }}) }}
+    <span class="text_danger">{{ form_errors(form.nombre) }}</span></br>
+    {{ form_label(form.email) }}
+    {{ form_widget(form.email, { 'attr' : { 'class' : 'form-control' }}) }}
+    <span class="text_danger">{{ form_errors(form.email) }}</span></br>
+    {{ form_label(form.motivo) }}
+    {{ form_widget(form.motivo, { 'attr' : { 'class' : 'form-control' }}) }}
+    <span class="text_danger">{{ form_errors(form.motivo) }}</span></br>
+    {{ form_label(form.mensaje) }}
+    {{ form_widget(form.mensaje, { 'attr' : { 'class' : 'form-control' }}) }}
+    <span class="text_danger">{{ form_errors(form.mensaje) }}</span></br>
+    {{ form_widget(form.save, { 'attr' : { 'class' : 'btn btn-success' }}) }}
+    {{ form_end(form) }}
+    </div>
+    <div class="col-md-6">
+
+    </div>
+  </div>
+</div>
+{{ include('footer.html.twig') }}
+{% endblock %}

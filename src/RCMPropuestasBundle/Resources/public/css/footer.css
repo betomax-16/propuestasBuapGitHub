@@ -1,0 +1,25 @@
+body,html{ height:100%; margin:0; }
+#conteiner{ min-height: 100%; }
+#content{
+  width: 800px;
+  margin: 0 auto;
+  position: relative;
+  background: #CCC;
+  margin-bottom: 202px;
+}
+#header-top{
+  height: 40px;
+  width: auto;
+  background: #6ec5ff;
+  border-bottom: 3px solid #0099ff;
+}
+#footer{
+  width: auto;
+  height: 200px;
+  margin-top: -200px;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing: border-box;
+  background: #333;
+  border-top: 2px solid #000;
+}

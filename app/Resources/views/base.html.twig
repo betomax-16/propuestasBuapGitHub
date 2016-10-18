@@ -3,11 +3,18 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+          <link rel="stylesheet" href="{{ asset('public/css/bootstrap.min.css') }}">
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block body %}
+          {{ include('menu.html.twig') }}
+        {% endblock %}
+        {% block javascripts %}
+        <script type="text/javascript" src="{{ asset('public/js/jquery-1.9.1.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('public/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

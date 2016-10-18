@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('bundles/rcmpropuestas/css/footer.css') }}">
+{% endblock %}
+{% block body %}
+{{ parent() }}
+<div id="conteiner" class="container">
+  <div class="jumbotron">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <img src="{{ asset('public/images/nuevo-logo-buap-2014.png') }}" alt="LogoBUAP" class="img-responsive img-circle" style="width: 200px; height: 200px; margin-top: 15%">
+        </div>
+        <div class="col-md-8">
+          <h1>Benemerita Universidad Autónoma de Puebla</h1>
+          <p><a class="btn btn-primary btn-lg" href="{{ path('rcm_visitante_contacto') }}" role="button">Contactanos</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>HISTORIA</h2>
+        <p class="text-justify">
+           En el antiguo Colegio del Estado se realizaron esfuerzos para responder a las necesidades científicas de su tiempo
+           al crear, a fines del siglo XIX, los gabinetes de Física, Historia Natural, Bacteriología y Química y en los
+           primeros 20 años del siglo pasado, la Estación Sismológica y la Estación Meteorológica.
+        </p>
+        <p class="text-justify">
+           La fundación del Instituto de Biología y Medicina Experimental, en 1958, y su reestructuración en 1963,
+           así como los indicios de la investigación en la escuela de Físico Matemáticas, son los antecedentes de
+           lo que sería mas tarde el Instituto de ciencias de la Universidad Autónoma de Puebla (ICUAP).
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h2>VISIÓN</h2>
+        <p class="text-justify">
+           Ser el principal Instituto de Ciencia y Tecnología a nivel nacional que cuente con académicos de alto
+           perfil que desarrollen, de manera continua, investigación y productos de calidad con impacto en nuestra sociedad.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h2>INSTITUTO DE CIENCIAS</h2>
+        <p class="text-justify">
+           El ICUAP es una unidad académica de la Universidad Autónoma de Puebla que se funda en 1974,
+           con la finalidad de reorganizar, coordinar y promover de manera sistemática la investigación
+           científica a partir de los recursos con los que contaba la universidad, muchos de los cuales se
+           encontraban dispersos en distintas escuelas universitarias. La responsabilidad de dirigir al Instituto
+           recae en la persona del Ing. Luis Rivera Terrazas, participando con él 26 investigadores y 18
+           auxiliares en los distintos centros.
+        </p>
+        <p class="text-justify">
+          La creación del ICUAP surge con 2 ideas centrales, una pensando en que ayudaría gradualmente a
+          resolver los problemas concernientes a la superación del nivel académico de la BUAP pues el Instituto
+          sería un atractivo para aquellas gentes con preparación a nivel de maestría y doctorado, además de
+          cumplir con una de las tareas fundamentales de la Universidad como es la de realizar investigación científica.
+        </p>
+        <p class="text-justify">
+          La otra planteaba una estrecha relación entre la investigación científica y tecnológica con la
+          enseñanza universitaria, lo que daría una de las características fundamentales al Instituto de Ciencias de la BUAP.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{{ include('footer.html.twig') }}
+{% endblock %}
