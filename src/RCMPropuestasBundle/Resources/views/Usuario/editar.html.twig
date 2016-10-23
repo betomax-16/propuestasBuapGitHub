@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{{ parent() }}
+{{ include('RCMPropuestasBundle:Mensajes:message.html.twig') }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Editar Usuario</h1>
+        {% if foto == '' %}
+        <img src="{{asset('public/images/Icon-user.png')}}" alt="Foto" class="img-rounded" width="150" height="160" /></br>
+        {% else %}
+        <img src="{{asset(foto)}}" alt="Foto" class="img-rounded" width="150" height="160" /></br>
+        {% endif %}
+        {{ form_start(form,{'attr' : {'novalidate' : 'novalidate'}}) }}
+          <div class="form-group">
+            {{ form_label(form.nombre) }}
+            {{ form_widget(form.nombre, {'attr':{'class':'form-control', 'placeholder':'Nombre...'}}) }}
+            {{ form_errors(form.nombre) }}</br>
+          </div>
+          <div class="form-group">
+            {{ form_label(form.apellidoPaterno) }}
+            {{ form_widget(form.apellidoPaterno, {'attr':{'class':'form-control', 'placeholder':'Apellido Paterno...'}}) }}
+            {{ form_errors(form.apellidoPaterno) }}</br>
+          </div>
+          <div class="form-group">
+            {{ form_label(form.apellidoMaterno) }}
+            {{ form_widget(form.apellidoMaterno, {'attr':{'class':'form-control', 'placeholder':'Apellido Materno...'}}) }}
+            {{ form_errors(form.apellidoMaterno) }}</br>
+          </div>
+          <div class="form-group">
+            {{ form_label(form.departamento) }}
+            {{ form_widget(form.departamento, {'attr':{'class':'form-control', 'placeholder':'Departamento...'}}) }}
+            {{ form_errors(form.departamento) }}</br>
+          </div>
+          <div class="form-group">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr':{'class':'form-control', 'placeholder':'Email...'}}) }}
+            {{ form_errors(form.email) }}</br>
+          </div>
+          <div class="form-group">
+            <label>Foto</label>
+            {{ form_widget(form.file) }}
+            {{ form_errors(form.file) }}</br>
+          </div>
+          <div class="form-group">
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password, {'attr':{'class':'form-control', 'placeholder':'Contraseña...'}}) }}
+            {{ form_errors(form.password) }}</br>
+          </div>
+          <div class="form-group">
+            {{ form_label(form.role) }}
+            {{ form_widget(form.role, {'attr':{'class':'form-control', 'placeholder':'Rol...'}}) }}
+            {{ form_errors(form.role) }}</br>
+          </div>
+          <p>
+            {{ form_widget(form.save, {'label' : 'Guardar Usuario', 'attr':{'class':'btn btn-lg btn-success'}}) }}
+          </p>
+        {{ form_end(form) }}
+    </div>
+  </div>
+</div>
+{% endblock %}

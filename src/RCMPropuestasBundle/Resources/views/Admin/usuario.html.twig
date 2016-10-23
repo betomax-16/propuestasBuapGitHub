@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{{ parent() }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <h1>Usuario</h1>
+        {% if usuario.foto == '' %}
+        <img src="{{asset('public/images/Icon-user.png')}}" alt="Foto" class="img-rounded" width="150" height="160" /></br>
+        {% else %}
+        <img src="{{asset(usuario.getWebPath)}}" alt="Foto" class="img-rounded" width="150" height="160" /></br>
+        {% endif %}
+        <label><b>Nombre: </b></label>
+        <span>{{ usuario.nombre }}</span></br>
+        <label><b>Apellido Paterno: </b></label>
+        <span>{{ usuario.apellidoPaterno }}</span></br>
+        <label><b>Apellido Materno: </b></label>
+        <span>{{ usuario.apellidoMaterno }}</span></br>
+        <label><b>Departamento: </b></label>
+        <span>{{ usuario.departamento }}</span></br>
+        <label><b>Email: </b></label>
+        <span>{{ usuario.email }}</span></br>
+        <label><b>Rol: </b></label>
+        {% if usuario.role == 'ROLE_SUPER_ADMIN'%}
+          <span>SuperAdministrador</span></br>
+        {% elseif usuario.role == 'ROLE_ADMIN' %}
+          <span>Administrativo</span></br>
+        {% elseif usuario.role == 'ROLE_USER'%}
+          <span>Academico</span></br>
+        {% endif %}
+        <label><b>Fecha de Creación: </b></label>
+        <span>{{ usuario.createdAt|date('d-m-Y H:i') }}</span></br>
+        <label><b>Fecha de Actualización: </b></label>
+        <span>{{ usuario.updatedAt|date('d-m-Y H:i') }}</span></br>
+    </div>
+    <div class="col-md-3">
+      <h3>Acciones</h3>
+      <p>
+        <a href="{{ path('rcm_usuario_editar', { id : usuario.id }) }}" class="btn btn-primary btn-lg btn-block">
+          <span class="glyphicon glyphicon-edit"></span>
+          Editar Usuario
+        </a>
+      </p>
+      {% if is_granted('ROLE_SUPER_ADMIN') %}
+      <p>
+        {{ include('RCMPropuestasBundle:Usuario:forms/form.html.twig', { form : delete_form, message : '¿Estás seguro?'}) }}
+      </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 {{ parent() }}
-Bienvenido {{ app.user.NombreCompleto }}!!!
+<div class="container">
+  {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+    {{ include('RCMPropuestasBundle:Usuario:perfil.html.twig') }}
+  {% else %}
+    {{ include('RCMPropuestasBundle:Admin:home.html.twig') }}
+  {% endif %}
+</div>
 {% endblock %}

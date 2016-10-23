@@ -19,15 +19,15 @@ class UsuarioType extends AbstractType
             ->add('apellidoPaterno')
             ->add('apellidoMaterno')
             ->add('departamento')
-            ->add('email')
-            ->add('foto')
-            ->add('password')
-            ->add('role')
-            ->add('createdAt')
-            ->add('updatedAt')
+            ->add('email', 'email')
+            ->add('file')
+            //->add('foto', 'file', array('required' => false))
+            ->add('password', 'password')
+            ->add('role', 'choice', array('choices' => array('ROLE_ADMIN' => 'Administrativo', 'ROLE_USER' => 'Academico', 'ROLE_SUPER_ADMIN' => 'SuperAdministrador'), 'placeholder' => 'Role...'))
+            ->add('save', 'submit')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -43,6 +43,6 @@ class UsuarioType extends AbstractType
      */
     public function getName()
     {
-        return 'rcmpropuestasbundle_usuario';
+        return 'Usuario';
     }
 }

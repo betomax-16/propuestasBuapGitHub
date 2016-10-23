@@ -1,0 +1,30 @@
+rcm_usuario_agregar:
+    path: /agregar
+    defaults: { _controller: RCMPropuestasBundle:Usuario:agregar }
+
+rcm_usuario_crear:
+    path: /crear
+    defaults: { _controller: RCMPropuestasBundle:Usuario:crear }
+    methods: [POST, PUT]
+
+rcm_usuario_lista:
+    path: /lista
+    defaults: { _controller: RCMPropuestasBundle:Usuario:lista }
+
+rcm_usuario_ver:
+    path: /ver/{id}
+    defaults: { _controller: RCMPropuestasBundle:Usuario:ver }
+
+rcm_usuario_editar:
+    path: /editar/{id}
+    defaults: { _controller: RCMPropuestasBundle:Usuario:editar }
+
+rcm_usuario_actualizar:
+    path: /actualizar/{id}
+    defaults: { _controller: RCMPropuestasBundle:Usuario:actualizar }
+    methods: [POST, PUT]
+
+rcm_usuario_eliminar:
+    path: /eliminar/{id}
+    defaults: { _controller: RCMPropuestasBundle:Usuario:eliminar }
+    methods: DELETE

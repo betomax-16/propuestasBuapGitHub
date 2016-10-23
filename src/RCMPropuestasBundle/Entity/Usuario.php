@@ -3,9 +3,10 @@
 namespace RCMPropuestasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * Usuario
  *
@@ -77,7 +78,7 @@ class Usuario implements AdvancedUserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="role", type="string", columnDefinition="ENUM('ROLE_ADMIN', 'ROLE_USER')")
+     * @ORM\Column(name="role", type="string", columnDefinition="ENUM('ROLE_SUPER_ADMIN','ROLE_ADMIN', 'ROLE_USER')")
      */
     private $role;
 
@@ -406,5 +407,115 @@ class Usuario implements AdvancedUserInterface, \Serializable
     public function isEnabled()
     {
       return true;
+    }
+    //--------------------------------------------------------------------------------
+    public function getAbsolutePath()
+    {
+        return null === $this->foto
+            ? null
+            : $this->getUploadRootDir().'/'.$this->foto;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->foto
+            ? null
+            : $this->getUploadDir().'/'.$this->foto;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // el directorio absoluto donde se guardan los documentos
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // Eliminamos el __DIR__ para evitar errores al mostrar en view
+        return 'uploads/imageUser';
+    }
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    private $file;
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+      $this->file = $file;
+      // comprobamos si tenemos un image path antiguo
+      if (isset($this->foto)) {
+          // guardamos el nombre antiguo para borrarlo después del update
+          $this->temp = $this->foto;
+          $this->foto = null;
+      } else {
+          $this->foto = 'initial';
+      }
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+      if (null === $this->getFile()) {
+          return;
+      }
+
+      // si hay algún error cuando se mueva el archivo, se lanzará una excepción
+      // automáticamente con move(). Esto prevendrá a la entidad
+      // de ser persistida en la base de datos cuando haya error
+      $this->getFile()->move($this->getUploadDir(), $this->foto);
+
+      // comprobar si tenemos una imagen vieja
+      if (isset($this->temp)) {
+          // borrar esa imagen
+          unlink($this->getUploadDir().'/'.$this->temp);
+          // limpiar el image path temporal
+          $this->temp = null;
+      }
+      $this->file = null;
+    }
+
+    private $temp;
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->getFile()) {
+            // hacemos cualquier cosa para generar el nombre único
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->foto = $filename.'.'.$this->getFile()->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        $file = $this->getWebPath();
+        if ($file) {
+            unlink($file);
+        }
     }
 }

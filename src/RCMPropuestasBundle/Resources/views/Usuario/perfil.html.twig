@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-3">
+    {% if app.user.foto == '' %}
+    <img src="{{ asset('public/images/Icon-user.png') }}" alt="Foto" class="img-rounded" width="150" height="160"/>
+    {% else %}
+    <img src="{{asset(app.user.getWebPath)}}" alt="Foto" class="img-rounded" width="150" height="160"/>
+    {% endif %}
+  </div>
+  <div class="col-md-9">
+    <h3 class="text-center">Bienvenido {{ app.user.Nombre }}!!!</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="text-center">Propuestas</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Titulo</th>
+          <th>Tipo</th>
+          <th>Colaboradores</th>
+          <th>Fecha de Creación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Titulo 1</td>
+          <td>Público</td>
+          <td>3</td>
+          <td>2016/10/10</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

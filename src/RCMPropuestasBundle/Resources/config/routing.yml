@@ -1,3 +1,15 @@
+rcm_propuesta_visitante:
+  resource: "@RCMPropuestasBundle/Resources/config/routes/visitante.yml"
+  prefix: ~
+
+rcm_propuesta_usuario:
+  resource: "@RCMPropuestasBundle/Resources/config/routes/usuario.yml"
+  prefix: /usuario
+
+rcm_propuesta_propuesta:
+  resource: "@RCMPropuestasBundle/Resources/config/routes/propuesta.yml"
+  prefix: /propuesta
+
 rcm_propuestas_homepage:
     path:     /hello/{name}
     defaults: { _controller: RCMPropuestasBundle:Default:index }
@@ -16,16 +28,3 @@ rcm_usuario_login_check:
 
 rcm_usuario_logout:
     path: /logout
-
-rcm_visitante_info:
-    path: /info
-    defaults: { _controller: RCMPropuestasBundle:Visitante:info }
-
-rcm_visitante_contacto:
-    path: /contacto
-    defaults: { _controller: RCMPropuestasBundle:Visitante:contacto }
-
-rcm_visitante_email:
-    path: /email
-    defaults: { _controller: RCMPropuestasBundle:Visitante:enviarEmail }
-    methods: POST
