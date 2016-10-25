@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Usuario
  *
@@ -17,6 +18,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class Usuario implements AdvancedUserInterface, \Serializable
 {
+    /**
+    * @ORM\OneToMany(targetEntity="Propuesta", mappedBy="usuario")
+    */
+    protected $propuestas;
+
     /**
      * @var integer
      *
@@ -96,6 +102,10 @@ class Usuario implements AdvancedUserInterface, \Serializable
      */
     private $updatedAt;
 
+    public function __construct()
+    {
+      $this->propuestas = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -517,5 +527,38 @@ class Usuario implements AdvancedUserInterface, \Serializable
         if ($file) {
             unlink($file);
         }
+    }
+
+    /**
+     * Add propuestas
+     *
+     * @param \RCMPropuestasBundle\Entity\Propuesta $propuestas
+     * @return Usuario
+     */
+    public function addPropuesta(\RCMPropuestasBundle\Entity\Propuesta $propuestas)
+    {
+        $this->propuestas[] = $propuestas;
+
+        return $this;
+    }
+
+    /**
+     * Remove propuestas
+     *
+     * @param \RCMPropuestasBundle\Entity\Propuesta $propuestas
+     */
+    public function removePropuesta(\RCMPropuestasBundle\Entity\Propuesta $propuestas)
+    {
+        $this->propuestas->removeElement($propuestas);
+    }
+
+    /**
+     * Get propuestas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPropuestas()
+    {
+        return $this->propuestas;
     }
 }

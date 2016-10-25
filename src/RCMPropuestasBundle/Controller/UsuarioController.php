@@ -14,7 +14,11 @@ class UsuarioController extends Controller
 {
   public function homeAction()
   {
-    return $this->render('RCMPropuestasBundle:Usuario:home.html.twig');
+    $deleteForm = $this->createFormBuilder()
+                       ->setAction($this->generateUrl('rcm_propuesta_eliminar', array('id' => 'ID_PROP')))
+                       ->setMethod('DELETE')
+                       ->getForm();
+    return $this->render('RCMPropuestasBundle:Usuario:home.html.twig', array('delete_form_ajax' => $deleteForm->createView()));
   }
 
   private function crearFormAgregar(Usuario $entidad)

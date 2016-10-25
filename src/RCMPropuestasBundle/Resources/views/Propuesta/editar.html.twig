@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{{ parent() }}
+{{ include('RCMPropuestasBundle:Mensajes:message.html.twig') }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>Editar Propuesta</h1>
+        {{ form_start(form, {'attr' : {'novalidate' : 'novalidate'}}) }}
+          <div class="form-group">
+            {{ form_label(form.titulo) }}
+            {{ form_widget(form.titulo, {'attr':{'class':'form-control', 'placeholder':'Titulo...'}}) }}
+            {{ form_errors(form.titulo) }}</br>
+          </div>
+          <div class="form-group">
+            {{ form_label(form.descripcion) }}
+            {{ form_widget(form.descripcion, {'attr':{'class':'form-control', 'placeholder':'Descripción...'}}) }}
+            {{ form_errors(form.descripcion) }}</br>
+          </div>
+          <div class="form-group">
+            {{ form_label(form.tipo) }}
+            {{ form_widget(form.tipo, {'attr':{'class':'form-control', 'placeholder':'Tipo...'}}) }}
+            {{ form_errors(form.tipo) }}</br>
+          </div>
+          <div class="form-group">
+            {{ form_label(form.visibilidad) }}
+            {{ form_widget(form.visibilidad, {'attr':{'class':'form-control', 'placeholder':'Visibilidad...'}}) }}
+            {{ form_errors(form.visibilidad) }}</br>
+          </div>
+          <div class="form-group">
+            <label>Archivo</label>
+            {{ form_widget(form.file) }}
+            {{ form_errors(form.file) }}</br>
+          </div>
+          <p>
+            {{ form_widget(form.save, {'label' : 'Guardar Cambios', 'attr':{'class':'btn btn-lg btn-success'}}) }}
+          </p>
+        {{ form_end(form) }}
+    </div>
+  </div>
+</div>
+{% endblock %}

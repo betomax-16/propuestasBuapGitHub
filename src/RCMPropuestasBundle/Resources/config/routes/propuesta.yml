@@ -1,0 +1,30 @@
+rcm_propuesta_agregar:
+    path: /agregar
+    defaults: { _controller: RCMPropuestasBundle:Propuesta:agregar }
+
+rcm_propuesta_crear:
+    path: /crear
+    defaults: { _controller: RCMPropuestasBundle:Propuesta:crear }
+    methods: [POST, PUT]
+
+rcm_propuesta_lista:
+    path: /lista
+    defaults: { _controller: RCMPropuestasBundle:Propuesta:lista }
+
+rcm_propuesta_ver:
+    path: /ver/{id}
+    defaults: { _controller: RCMPropuestasBundle:Propuesta:ver }
+
+rcm_propuesta_editar:
+    path: /editar/{id}
+    defaults: { _controller: RCMPropuestasBundle:Propuesta:editar }
+
+rcm_propuesta_actualizar:
+    path: /actualizar/{id}
+    defaults: { _controller: RCMPropuestasBundle:Propuesta:actualizar }
+    methods: [POST, PUT]
+
+rcm_propuesta_eliminar:
+    path: /eliminar/{id}
+    defaults: { _controller: RCMPropuestasBundle:Propuesta:eliminar }
+    methods: DELETE

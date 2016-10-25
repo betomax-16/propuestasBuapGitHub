@@ -16,20 +16,43 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Titulo</th>
-          <th>Tipo</th>
-          <th>Colaboradores</th>
-          <th>Fecha de Creación</th>
+        <th>Titulo</th>
+        <th>Descripción</th>
+        <th>Tipo</th>
+        <th>Visibilidad</th>
+        <th>Fecha de creación</th>
+        <th>Fecha de actualización</th>
+        <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Titulo 1</td>
-          <td>Público</td>
-          <td>3</td>
-          <td>2016/10/10</td>
+        {% for propuesta in app.user.propuestas %}
+        <tr data-id="{{ propuesta.id }}">
+          <td>{{ propuesta.titulo }}</td>
+          <td>{{ propuesta.descripcion }}</td>
+          <td>{{ propuesta.tipo }}</td>
+          {% if propuesta.visibilidad == 'PUBLIC' %}
+            <td class="text-uppercase bg-success"><b>público</b></td>
+          {% else %}
+            <td class="text-uppercase bg-danger"><b>privado</b></td>
+          {% endif %}
+          <td><b>{{ propuesta.createdAt|date('d-m-Y H:i') }}</b></td>
+          <td><b>{{ propuesta.updatedAt|date('d-m-Y H:i') }}</b></td>
+          <td>
+            {% if propuesta.visibilidad == 'PUBLIC' %}
+              <a href="{{ path('rcm_propuesta_ver', {id:propuesta.id}) }}" class="btn btn-success btn-sm">Ver</a>
+            {% elseif propuesta.visibilidad == 'PRIVATE' and app.user == propuesta.usuario %}
+              <a href="{{ path('rcm_propuesta_ver', {id:propuesta.id}) }}" class="btn btn-success btn-sm">Ver</a>
+            {% else %}
+              <a href="#" class="btn btn-success btn-sm" disabled="disabled">Ver</a>
+            {% endif %}
+            <a href="{{ path('rcm_propuesta_editar', {id:propuesta.id}) }}" class="btn btn-info btn-sm">Editar</a>
+            <a href="#" class="btn btn-danger btn-sm btn-delete">Eliminar</a>
+          </td>
         </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+{{ include('RCMPropuestasBundle:Usuario:forms/form.html.twig', {form : delete_form_ajax, message : '¿Estas seguro?', id : 'form-delete', with_submit : false}) }}

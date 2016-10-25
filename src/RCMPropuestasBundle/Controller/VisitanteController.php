@@ -31,9 +31,10 @@ class VisitanteController extends Controller
             ->setSubject($form->get('motivo')->getData())
             ->setFrom('betomax1636@gmail.com')
             ->setTo($form->get('email')->getData())
+            ->setContentType("text/html")
             ->setBody(
                 $this->renderView(
-                    'RCMPropuestasBundle:Visitante:email/email.txt.twig',
+                    'RCMPropuestasBundle:Visitante:email/email.html.twig',
                     array(
                         'ip' => $request->getClientIp(),
                         'nombre' => $form->get('nombre')->getData(),
