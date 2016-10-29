@@ -10,20 +10,21 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
+      Total de resgistros: {{ pagination.getTotalItemCount }} </br>
       <h2 class="text-center">Usuarios</h2>
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Tipo</th>
-            <th>Fecha de Creación</th>
-            <th>Fecha de Actualización</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Nombre', 'u.nombre') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Email', 'u.email') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Tipo', 'u.role') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Fecha de Creación', 'u.createdAt') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Fecha de Actualización', 'u.updatedAt') }}</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {% for usuario in usuarios %}
+          {% for usuario in pagination %}
           <tr data-id="{{ usuario.id }}">
             <td>{{ usuario.NombreCompleto }}</td>
             <td>{{ usuario.email }}</td>
@@ -37,7 +38,7 @@
             <td>{{ usuario.createdAt|date('d-m-Y H:i')}}</td>
             <td>{{ usuario.updatedAt|date('d-m-Y H:i')}}</td>
             <td>
-              <a href="{{ path('rcm_usuario_ver', {'id': usuario.id}) }}" class="btn btn-success btn-sm">Ver</a>
+              <a href="{{ path('rcm_usuario_ver_perfil_publico', {'id': usuario.id}) }}" class="btn btn-success btn-sm">Ver</a>
               <a href="{{ path('rcm_usuario_editar', {'id': usuario.id}) }}" class="btn btn-info btn-sm">Editar</a>
               <a href="#" class="btn btn-danger btn-sm btn-delete">Eliminar</a>
             </td>
@@ -45,6 +46,9 @@
           {% endfor %}
         </tbody>
       </table>
+      <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+      </div>
     </div>
   </div>
 </div>

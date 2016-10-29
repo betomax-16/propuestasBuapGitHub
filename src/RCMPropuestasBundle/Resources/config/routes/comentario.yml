@@ -1,0 +1,13 @@
+rcm_comentario_agregar:
+    path: /agregar/{id}
+    defaults: { _controller: RCMPropuestasBundle:Comentario:agregar }
+
+rcm_comentario_crear:
+    path: /crear/{id}
+    defaults: { _controller: RCMPropuestasBundle:Comentario:crear }
+    methods: [POST,PUT]
+
+rcm_comentario_eliminar:
+    path: /eliminar/{id}
+    defaults: { _controller: RCMPropuestasBundle:Comentario:eliminar }
+    methods: DELETE

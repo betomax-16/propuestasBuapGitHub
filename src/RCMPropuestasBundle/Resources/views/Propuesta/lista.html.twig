@@ -10,18 +10,19 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
+      Total de resgistros: {{ pagination.getTotalItemCount }} </br>
       <h2 class="text-center">Propuestas</h2>
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Titulo</th>
-            <th>Descripción</th>
-            <th>Tipo</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Titulo', 'p.titulo') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Descripción', 'p.descripcion') }}</th>
+            <th>{{ knp_pagination_sortable(pagination, 'Tipo', 'p.tipo') }}</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {% for propuesta in propuestas %}
+          {% for propuesta in pagination %}
           <tr data-id="{{ propuesta.id }}">
             <td>{{ propuesta.titulo }}</td>
             <td>{{ propuesta.descripcion }}</td>
@@ -34,6 +35,9 @@
           {% endfor %}
         </tbody>
       </table>
+      <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+      </div>
     </div>
   </div>
 </div>

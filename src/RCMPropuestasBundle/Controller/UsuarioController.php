@@ -12,13 +12,17 @@ use Symfony\Component\Form\FormError;
 
 class UsuarioController extends Controller
 {
-  public function homeAction()
+  public function homeAction(Request $request)
   {
+    $manejador = $this->getDoctrine()->getManager();
+    $query = $manejador->createQuery('SELECT p FROM RCMPropuestasBundle:Propuesta p WHERE p.usuario = :usuario')->setParameter('usuario', $this->getUser());
+    $paginator = $this->get('knp_paginator');
+    $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 10);
     $deleteForm = $this->createFormBuilder()
                        ->setAction($this->generateUrl('rcm_propuesta_eliminar', array('id' => 'ID_PROP')))
                        ->setMethod('DELETE')
                        ->getForm();
-    return $this->render('RCMPropuestasBundle:Usuario:home.html.twig', array('delete_form_ajax' => $deleteForm->createView()));
+    return $this->render('RCMPropuestasBundle:Usuario:home.html.twig', array('pagination' => $pagination, 'delete_form_ajax' => $deleteForm->createView()));
   }
 
   private function crearFormAgregar(Usuario $entidad)
@@ -60,15 +64,18 @@ class UsuarioController extends Controller
     return $this->render('RCMPropuestasBundle:Admin:agregar.html.twig', array('form' => $form->createView()));
   }
 
-  public function listaAction()
+  public function listaAction(Request $request)
   {
     $manejador = $this->getDoctrine()->getManager();
-    $usuarios = $manejador->getRepository('RCMPropuestasBundle:Usuario')->findAll();
+    //$usuarios = $manejador->getRepository('RCMPropuestasBundle:Usuario')->findAll();
+    $query = $manejador->createQuery('SELECT u FROM RCMPropuestasBundle:Usuario u ');
+    $paginator = $this->get('knp_paginator');
+    $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 10);
     $formDelete = $this->createFormBuilder()
                 ->setAction($this->generateUrl('rcm_usuario_eliminar', array('id' => 'ID_USER')))
                 ->setMethod('DELETE')
                 ->getForm();
-    return $this->render('RCMPropuestasBundle:Admin:listaUsuarios.html.twig', array('usuarios' => $usuarios, 'delete_form_ajax' => $formDelete->createView()));
+    return $this->render('RCMPropuestasBundle:Admin:listaUsuarios.html.twig', array('pagination' => $pagination, 'delete_form_ajax' => $formDelete->createView()));
   }
 
   public function verAction($id)
@@ -80,6 +87,19 @@ class UsuarioController extends Controller
     }
     $formDelete = $this->crearFormEliminar($usuario);
     return $this->render('RCMPropuestasBundle:Admin:usuario.html.twig', array('usuario' => $usuario, 'delete_form' => $formDelete->createView()));
+  }
+
+  public function perfilPublicoAction($id, Request $request)
+  {
+    $manejador = $this->getDoctrine()->getManager();
+    $usuario = $manejador->getRepository('RCMPropuestasBundle:Usuario')->find($id);
+    $query = $manejador->createQuery('SELECT p FROM RCMPropuestasBundle:Propuesta p WHERE p.usuario = :usuario')->setParameter('usuario', $usuario);
+    $paginator = $this->get('knp_paginator');
+    $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 10);
+    if (!$usuario) {
+      throw $this->createNotFoundException('Usuario no encontrado');
+    }
+    return $this->render('RCMPropuestasBundle:Usuario:perfilPublic.html.twig', array('pagination' => $pagination, 'usuario' => $usuario));
   }
 
   public function editarAction($id)
@@ -167,5 +187,22 @@ class UsuarioController extends Controller
   {
     $manejador->remove($entidad);
     $manejador->flush();
+  }
+
+  public function autocompleteAction(Request $request)
+  {
+    if ($request->isXMLHttpRequest()) {
+      $nombre = $request->get('nombre');
+      $manejador = $this->getDoctrine()->getManager();
+      $query = $manejador->createQuery('SELECT u.id, u.nombre, u.apellidoPaterno, u.apellidoMaterno FROM RCMPropuestasBundle:Usuario u WHERE u.nombre LIKE :data ORDER BY u.nombre ASC')
+                         ->setParameter('data', '%'.$nombre.'%');
+      $results = $query->getResult();
+      $datos = array();
+      foreach ($results as $key => $value) {
+        array_push($datos, array('value' => $value['id'], 'label' => $value['nombre'].' '.$value['apellidoPaterno'].' '.$value['apellidoMaterno']));
+      }
+      return new Response(json_encode(array('datos' => $datos)), 200,  array('Content-Type' => 'applicatin/json'));
+    }
+
   }
 }

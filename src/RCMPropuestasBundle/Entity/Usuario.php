@@ -24,6 +24,11 @@ class Usuario implements AdvancedUserInterface, \Serializable
     protected $propuestas;
 
     /**
+    * @ORM\OneToMany(targetEntity="Comentario", mappedBy="usuario")
+    */
+    protected $comentarios;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -105,6 +110,7 @@ class Usuario implements AdvancedUserInterface, \Serializable
     public function __construct()
     {
       $this->propuestas = new ArrayCollection();
+      $this->comentarios = new ArrayCollection();
     }
 
     /**
@@ -494,7 +500,7 @@ class Usuario implements AdvancedUserInterface, \Serializable
       $this->getFile()->move($this->getUploadDir(), $this->foto);
 
       // comprobar si tenemos una imagen vieja
-      if (isset($this->temp)) {
+      if (isset($this->temp) && $this->temp != '') {
           // borrar esa imagen
           unlink($this->getUploadDir().'/'.$this->temp);
           // limpiar el image path temporal
@@ -555,10 +561,43 @@ class Usuario implements AdvancedUserInterface, \Serializable
     /**
      * Get propuestas
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPropuestas()
     {
         return $this->propuestas;
+    }
+
+    /**
+     * Add comentarios
+     *
+     * @param \RCMPropuestasBundle\Entity\Comentario $comentarios
+     * @return Usuario
+     */
+    public function addComentario(\RCMPropuestasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \RCMPropuestasBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\RCMPropuestasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
     }
 }

@@ -28,3 +28,7 @@ rcm_propuesta_eliminar:
     path: /eliminar/{id}
     defaults: { _controller: RCMPropuestasBundle:Propuesta:eliminar }
     methods: DELETE
+
+rcm_propuesta_descarga:
+    path: /descarga/{id}
+    defaults: { _controller: RCMPropuestasBundle:Propuesta:descarga }

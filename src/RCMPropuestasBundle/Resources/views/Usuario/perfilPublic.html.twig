@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{{ parent() }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      {% if usuario.foto == '' %}
+      <img src="{{ asset('public/images/Icon-user.png') }}" alt="Foto" class="img-rounded" width="150" height="160"/>
+      {% else %}
+      <img src="{{asset(usuario.getWebPath)}}" alt="Foto" class="img-rounded" width="150" height="160"/>
+      {% endif %}
+    </div>
+    <div class="col-md-9">
+      <h3 class="text-center">{{ usuario.NombreCompleto }}</h3>
+      {% if is_granted('ROLE_ADMIN') %}
+        <h5>Role: Administrativo</h5>
+      {% else %}
+        <h5>Role: Academico</h5>
+      {% endif %}
+      Total de resgistros: {{ pagination.getTotalItemCount }} </br>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="text-center">Propuestas</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+          <th>{{ knp_pagination_sortable(pagination, 'Titulo', 'p.titulo') }}</th>
+          <th>{{ knp_pagination_sortable(pagination, 'Descripción', 'p.descripcion') }}</th>
+          <th>{{ knp_pagination_sortable(pagination, 'Tipo', 'p.tipo') }}</th>
+          <th>{{ knp_pagination_sortable(pagination, 'Fecha de creación', 'p.createdAt') }}</th>
+          <th>{{ knp_pagination_sortable(pagination, 'Fecha de actualización', 'p.updatedAt') }}</th>
+          <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for propuesta in pagination %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+              <tr data-id="{{ propuesta.id }}">
+                <td>{{ propuesta.titulo }}</td>
+                <td>{{ propuesta.descripcion }}</td>
+                <td>{{ propuesta.tipo }}</td>
+                <td><b>{{ propuesta.createdAt|date('d-m-Y H:i') }}</b></td>
+                <td><b>{{ propuesta.updatedAt|date('d-m-Y H:i') }}</b></td>
+                <td>
+                  <a href="{{ path('rcm_propuesta_ver', {id:propuesta.id}) }}" class="btn btn-success btn-sm">Ver</a>
+                </td>
+              </tr>
+            {% else %}
+              {% if propuesta.visibilidad == 'PUBLIC' %}
+              <tr data-id="{{ propuesta.id }}">
+                <td>{{ propuesta.titulo }}</td>
+                <td>{{ propuesta.descripcion }}</td>
+                <td>{{ propuesta.tipo }}</td>
+                <td><b>{{ propuesta.createdAt|date('d-m-Y H:i') }}</b></td>
+                <td><b>{{ propuesta.updatedAt|date('d-m-Y H:i') }}</b></td>
+                <td>
+                  <a href="{{ path('rcm_propuesta_ver', {id:propuesta.id}) }}" class="btn btn-success btn-sm">Ver</a>
+                </td>
+              </tr>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

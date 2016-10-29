@@ -5,6 +5,7 @@ namespace RCMPropuestasBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Propuesta
@@ -20,6 +21,11 @@ class Propuesta
     * @ORM\joinColumn(name="idUsuario", referencedColumnName="id", onDelete="CASCADE", nullable=false)
     */
     protected $usuario;
+
+    /**
+    * @ORM\OneToMany(targetEntity="Comentario", mappedBy="propuesta")
+    */
+    protected $comentarios;
 
     /**
      * @var integer
@@ -79,6 +85,18 @@ class Propuesta
      */
     private $updatedAt;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombreOriginal", type="string", length=255)
+     */
+    private $nombreOriginal;
+
+
+    public function __construct()
+    {
+      $this->comentarios = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -203,6 +221,29 @@ class Propuesta
     public function getRuta()
     {
         return $this->ruta;
+    }
+
+    /**
+     * Set ruta
+     *
+     * @param string $nombreOriginal
+     * @return Propuesta
+     */
+    public function setNombreOriginal($nombreOriginal)
+    {
+        $this->nombreOriginal = $nombreOriginal;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreOriginal
+     *
+     * @return string
+     */
+    public function getNombreOriginal()
+    {
+        return $this->nombreOriginal;
     }
 
     /**
@@ -388,6 +429,7 @@ class Propuesta
             // hacemos cualquier cosa para generar el nombre único
             $filename = sha1(uniqid(mt_rand(), true));
             $this->ruta = $filename.'.'.$this->getFile()->guessExtension();
+            $this->nombreOriginal = $this->getFile()->getClientOriginalName();
         }
     }
 
@@ -400,5 +442,38 @@ class Propuesta
         if ($file) {
             unlink($file);
         }
+    }
+
+    /**
+     * Add comentarios
+     *
+     * @param \RCMPropuestasBundle\Entity\Comentario $comentarios
+     * @return Propuesta
+     */
+    public function addComentario(\RCMPropuestasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \RCMPropuestasBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\RCMPropuestasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
     }
 }

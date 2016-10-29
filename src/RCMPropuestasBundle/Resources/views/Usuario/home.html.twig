@@ -9,7 +9,9 @@
 </div>
 <div class="container">
   {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
-    {{ include('RCMPropuestasBundle:Usuario:perfil.html.twig') }}
+    {% if delete_form_ajax is defined %}
+      {{ include('RCMPropuestasBundle:Usuario:perfil.html.twig', {pagination:pagination}) }}
+    {% endif %}
   {% else %}
     {{ include('RCMPropuestasBundle:Admin:home.html.twig') }}
   {% endif %}

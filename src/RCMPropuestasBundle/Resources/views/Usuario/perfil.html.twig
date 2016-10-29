@@ -12,21 +12,22 @@
 </div>
 <div class="row">
   <div class="col-md-12">
+    Total de resgistros: {{ pagination.getTotalItemCount }} </br>
     <h2 class="text-center">Propuestas</h2>
     <table class="table table-striped">
       <thead>
         <tr>
-        <th>Titulo</th>
-        <th>Descripción</th>
-        <th>Tipo</th>
-        <th>Visibilidad</th>
-        <th>Fecha de creación</th>
-        <th>Fecha de actualización</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Titulo', 'p.titulo') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Descripción', 'p.descripcion') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Tipo', 'p.tipo') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Visibilidad', 'p.visibilidad') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Fecha de creación', 'p.createdAt') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Fecha de actualización', 'p.updatedAt') }}</th>
         <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        {% for propuesta in app.user.propuestas %}
+        {% for propuesta in pagination %}
         <tr data-id="{{ propuesta.id }}">
           <td>{{ propuesta.titulo }}</td>
           <td>{{ propuesta.descripcion }}</td>
@@ -53,6 +54,9 @@
         {% endfor %}
       </tbody>
     </table>
+    <div class="navigation">
+      {{ knp_pagination_render(pagination) }}
+    </div>
   </div>
 </div>
 {{ include('RCMPropuestasBundle:Usuario:forms/form.html.twig', {form : delete_form_ajax, message : '¿Estas seguro?', id : 'form-delete', with_submit : false}) }}

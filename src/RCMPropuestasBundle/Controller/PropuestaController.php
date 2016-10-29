@@ -7,9 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use RCMPropuestasBundle\Form\PropuestaType;
 use RCMPropuestasBundle\Entity\Propuesta;
+use RCMPropuestasBundle\Form\ComentarioType;
+use RCMPropuestasBundle\Entity\Comentario;
 
 class PropuestaController extends Controller
 {
+
     private function crearFormAgregar(Propuesta $entidad)
     {
       return $this->createForm(new PropuestaType(), $entidad, array('action' => $this->generateUrl('rcm_propuesta_crear'), 'method' => 'PUT'));
@@ -33,7 +36,7 @@ class PropuestaController extends Controller
         $manejador = $this->getDoctrine()->getManager();
         $manejador->persist($propuesta);
         $manejador->flush();
-        $this->addFlash('succes','Propuesta almacenada correctamente');
+        $this->addFlash('success','Propuesta almacenada correctamente');
         return $this->redirectToRoute('rcm_usuario_homepage');
       }
       return $this->render('RCMPropuestasBundle:Propuesta:agregar.html.twig',  array('form' => $form->createView()));
@@ -42,21 +45,32 @@ class PropuestaController extends Controller
     public function listaAction()
     {
       $manejador = $this->getDoctrine()->getManager();
-      //solo las que sean publicas
-      //tratar de filtrar por usuario
-      $propuestas = $manejador->getRepository('RCMPropuestasBundle:Propuesta')->findAll();
+      //$propuestas = $manejador->getRepository('RCMPropuestasBundle:Propuesta')->findAll();
+      $query = $manejador->createQuery('SELECT p FROM RCMPropuestasBundle:Propuesta p ');
+      $paginator = $this->get('knp_paginator');
+      $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 10);
       $deleteForm = $this->createFormBuilder()
                          ->setAction($this->generateUrl('rcm_propuesta_eliminar', array('id' => 'ID_PROP')))
                          ->setMethod('DELETE')
                          ->getForm();
-      return $this->render('RCMPropuestasBundle:Propuesta:lista.html.twig', array('propuestas' => $propuestas, 'delete_form_ajax' => $deleteForm->createView()));
+      return $this->render('RCMPropuestasBundle:Propuesta:lista.html.twig', array('pagination' => $pagination, 'delete_form_ajax' => $deleteForm->createView()));
+    }
+
+    private function crearFormAgregarComentario(Comentario $entidad, $id)
+    {
+      return $this->createForm(new ComentarioType(), $entidad, array('action' => $this->generateUrl('rcm_comentario_crear', array('id' => $id)), 'method' => 'PUT'));
     }
 
     public function verAction($id)
     {
       $manejador = $this->getDoctrine()->getManager();
       $propuesta = $manejador->getRepository('RCMPropuestasBundle:Propuesta')->find($id);
-      return $this->render('RCMPropuestasBundle:Propuesta:ver.html.twig', array('propuesta' => $propuesta));
+      $formComentario = $this->crearFormAgregarComentario(new Comentario(), $propuesta->getId());
+      $formDelete = $this->createFormBuilder()
+                         ->setAction($this->generateUrl('rcm_comentario_eliminar', array('id' => 'ID_COM')))
+                         ->setMethod('DELETE')
+                         ->getForm();
+      return $this->render('RCMPropuestasBundle:Propuesta:ver.html.twig', array('propuesta' => $propuesta, 'formAgergarComentario' => $formComentario->createView(), 'delete_form_ajax' => $formDelete->createView()));
     }
 
     private function crearFormEditar(Propuesta $entidad)
@@ -118,5 +132,25 @@ class PropuestaController extends Controller
     {
       $manejador->remove($entidad);
       $manejador->flush();
+    }
+
+    public function descargaAction($id, Request $request)
+    {
+      $manejador = $this->getDoctrine()->getManager();
+      $propuesta = $manejador->getRepository('RCMPropuestasBundle:Propuesta')->find($id);
+      if (!$propuesta) {
+        throw $this->createNotFoundException('Propusta no encontrada');
+      }
+      if (!file_exists($propuesta->getWebPath())) {
+        throw $this->createNotFoundException('Archivo propusta no encontrada');
+      }
+
+      $content = file_get_contents($propuesta->getWebPath());
+      $response = new Response();
+      $response->headers->set('Content-Type', 'application/pdf');
+      $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $propuesta->getNombreOriginal()));
+      $response->headers->set('Content-Length', filesize($propuesta->getWebPath()));
+      $response->setContent($content);
+      return $response;
     }
 }

@@ -1,0 +1,10 @@
+{{ form_start(form, {'attr':{'id':'form-comentario'}}) }}
+  <div class="form-group">
+    {{ form_label(form.comentario) }}
+    {{ form_widget(form.comentario, {'attr':{'class':'form-control', 'placeholder':'Comentario...'}}) }}
+    {{ form_errors(form.comentario) }}
+  </div>
+  <p>
+    {{ form_widget(form.save, {'label' : 'Guardar', 'attr':{'class':'btn btn-sm btn-success'}}) }}
+  </p>
+{{ form_end(form) }}

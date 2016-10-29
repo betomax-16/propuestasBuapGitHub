@@ -15,6 +15,10 @@ rcm_usuario_ver:
     path: /ver/{id}
     defaults: { _controller: RCMPropuestasBundle:Usuario:ver }
 
+rcm_usuario_ver_perfil_publico:
+    path: /publico/{id}
+    defaults: { _controller: RCMPropuestasBundle:Usuario:perfilPublico }
+
 rcm_usuario_editar:
     path: /editar/{id}
     defaults: { _controller: RCMPropuestasBundle:Usuario:editar }
@@ -28,3 +32,7 @@ rcm_usuario_eliminar:
     path: /eliminar/{id}
     defaults: { _controller: RCMPropuestasBundle:Usuario:eliminar }
     methods: DELETE
+
+rcm_usuario_autocomplete:
+    path: /autocomplete
+    defaults: { _controller: RCMPropuestasBundle:Usuario:autocomplete }

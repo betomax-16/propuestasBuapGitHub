@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="row">
+      {% if app.user == com.usuario or app.user == com.propuesta.usuario %}
+      <div class="col-md-offset-11">
+        <button id="{{ com.Id }}" class="btn btn-danger btn-xs btn-delete" type="button" name="button">X</button>
+      </div>
+      {% endif %}
+    </div>
+    <div class="row">
+      {% if com.usuario.foto == '' %}
+        <div class="col-md-2"><img src="{{ asset('public/images/Icon-user.png') }}" alt="foto" width="60" height="60"/></div>
+      {% else %}
+        <div class="col-md-2"><img src="{{ asset(com.usuario.getWebPath) }}" alt="foto" width="60" height="60"/></div>
+      {% endif %}
+      <div class="col-md-10"><b>{{ com.usuario.NombreCompleto }}</b></div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <textarea rows="2" cols="96" readonly>{{ com.Comentario }}</textarea>
+      </div>
+    </div>
+  </div>
+</div>

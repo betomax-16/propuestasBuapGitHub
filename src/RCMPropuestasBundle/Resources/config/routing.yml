@@ -10,6 +10,10 @@ rcm_propuesta_propuesta:
   resource: "@RCMPropuestasBundle/Resources/config/routes/propuesta.yml"
   prefix: /propuesta
 
+rcm_propuesta_comentario:
+  resource: "@RCMPropuestasBundle/Resources/config/routes/comentario.yml"
+  prefix: /comentario
+
 rcm_propuestas_homepage:
     path:     /hello/{name}
     defaults: { _controller: RCMPropuestasBundle:Default:index }
