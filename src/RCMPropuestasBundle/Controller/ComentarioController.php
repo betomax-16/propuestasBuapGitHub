@@ -71,4 +71,21 @@ class ComentarioController extends Controller
     $manejador->remove($entidad);
     $manejador->flush();
   }
+
+  public function notificacionesAction()
+  {
+    return $this->render('RCMPropuestasBundle:Comentario:notificaciones.html.twig');
+  }
+
+  public function vistoAction(Request $request)
+  {
+    if ($request->isXMLHttpRequest()) {
+      $id = $request->get('id');
+      $manejador = $this->getDoctrine()->getManager();
+      $comentario = $manejador->getRepository('RCMPropuestasBundle:Comentario')->find($id);
+      $comentario->setIsRead(true);
+      $manejador->flush();
+      return new Response(json_encode(array('message' => 'success')), 200, array('Content-Type' => 'application/json'));      
+    }
+  }
 }

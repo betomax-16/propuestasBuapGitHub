@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{{ parent() }}
+<div class="progress no-border hidden" id="notification-progress">
+  <div class="progress-bar progress-bar-striped active" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+    <span class="sr-only">Cargando...</span>
+  </div>
+</div>
+<div class="container">
+  {% set contador = 0 %}
+  {% for propuesta in app.user.propuestas %}
+    {% for comentario in propuesta.comentarios %}
+      {% if not comentario.isRead %}
+      {% set contador = contador + 1 %}
+      <div id="{{ path('rcm_propuesta_ver', {id:propuesta.id}) }}" name="{{ comentario.id }}" class="panel panel-default" style="cursor: pointer">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-2">
+            {% if comentario.usuario.foto != '' %}
+              <img src="{{ asset(comentario.usuario.getWebPath) }}" alt="foto" width="60" height="60"/>
+            {% else %}
+              <img src="{{ asset('public/images/Icon-user.png') }}" alt="foto" width="60" height="60"/>
+            {% endif %}
+            </div>
+            <div class="col-md-10">
+              <div class="row"><b>{{ comentario.usuario.NombreCompleto }}</b> ha comentado en:</div>
+              <div class="row"><b>Propuesta: {{ propuesta.titulo }}</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+  {% if contador == 0 %}
+    <h1>No tiene nuevas notificaciones!!!</h1>
+  {% endif %}
+</div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript" src="{{ asset('bundles/rcmpropuestas/js/verComentario.js') }}"></script>
+{% endblock %}

@@ -11,3 +11,11 @@ rcm_comentario_eliminar:
     path: /eliminar/{id}
     defaults: { _controller: RCMPropuestasBundle:Comentario:eliminar }
     methods: DELETE
+
+rcm_comentario_notificacion:
+    path: /notificaciones
+    defaults: { _controller: RCMPropuestasBundle:Comentario:notificaciones }
+
+rcm_comentario_notificacion_vista:
+    path: /notificacion_vista
+    defaults: { _controller: RCMPropuestasBundle:Comentario:visto }

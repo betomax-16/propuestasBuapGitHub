@@ -51,8 +51,8 @@
               {% endif %}
             {% endfor %}
           {% endfor %}
-          <button id="btnNotificaciones" class="btn btn-primary" type="button">
-            Messages <span class="badge">{{ contador }}</span>
+          <button id="btnNotificaciones" class="btn btn-primary" type="button" onclick="$(location).attr('href','{{ path('rcm_comentario_notificacion') }}');">
+            Comentarios <span class="badge">{{ contador }}</span>
           </button>
         </li>
         <form id="formBuscar" action="{{ path('rcm_usuario_ver_perfil_publico', {id:'ID_USER'}) }}" method="POST" class="navbar-form navbar-left">
